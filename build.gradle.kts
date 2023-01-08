@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.21"
+    id("maven-publish")
     application
 }
 
@@ -15,10 +16,10 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
 
-//    implementation("org.apache.poi:poi-ooxml:5.2.2")
-//    implementation("org.apache.commons:commons-csv:1.9.0")
-//    implementation("com.google.code.gson:gson:2.10")
-//    implementation("com.grapecity.documents:gcexcel:5.0.3")
+    implementation("org.apache.poi:poi-ooxml:5.2.2")
+    implementation("org.apache.commons:commons-csv:1.9.0")
+    implementation("com.google.code.gson:gson:2.10")
+    implementation("com.grapecity.documents:gcexcel:5.0.3")
 }
 
 tasks.test {
@@ -31,4 +32,16 @@ tasks.withType<KotlinCompile> {
 
 application {
     mainClass.set("MainKt")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "ru.student.distribution"
+            artifactId = "student-distribution-algorithm"
+            version = "1.0.0"
+
+            from(components["java"])
+        }
+    }
 }
