@@ -4,7 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="" />
+    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="Initial commit">
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/const.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/generation/GenerateNames.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/generation/GenerateParticipations.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/generation/GenerateProjects.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/generation/GenerateSkills.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/generation/GenerateStudents.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/generation/GenerateSupervisors.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/generation/States.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/model/Participation.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/model/Project.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/model/ProjectSkills.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/model/Skill.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/model/Speciality.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/model/State.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/model/Student.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/data/model/Supervisor.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/data/ExportDataToExcel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/data/ExportDataToTxt.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/data/ImportCsvData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/data/ImportExcelData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/distribution/Distribution.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/distribution/DistributionPreparation.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/domain/distribution/DistributionStatistics.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/util/funs.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +45,12 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="2K339qbHJmGc5RdmHrWUgBpGe3y" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -24,9 +60,16 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "E:/PROJECTS/INTELLIJ/student-distribution-algorithm/src/main/kotlin"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\PROJECTS\INTELLIJ\student-distribution-algorithm\src\main\kotlin" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -36,6 +79,18 @@
       <option name="presentableId" value="Default" />
       <updated>1673189291898</updated>
     </task>
+    <task id="LOCAL-00001" summary="Initial commit">
+      <created>1673189337731</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1673189337731</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
   </component>
 </project>

@@ -14,6 +14,11 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+
+    implementation("org.apache.poi:poi-ooxml:5.2.2")
+    implementation("org.apache.commons:commons-csv:1.9.0")
+    implementation("com.google.code.gson:gson:2.10")
+    implementation("com.grapecity.documents:gcexcel:5.0.3")
 }
 
 tasks.test {
