@@ -115,17 +115,17 @@ object ExportDataToExcel {
             index++
         }
         workBook.save(finalPath)
-        deleteExcessLists(filePath, index, institute, isUniformly)
+        deleteExcessLists(finalPath, filePath, index, institute, isUniformly)
     }
 
-    private fun deleteExcessLists(filePath: String, lastSheetNumber: Int, institute: String, isUniformly: Boolean) {
+    private fun deleteExcessLists(filePath: String, newFilePath: String, lastSheetNumber: Int, institute: String, isUniformly: Boolean) {
 
         val inputStream = FileInputStream(filePath)
         val book = WorkbookFactory.create(inputStream)
 
         book.removeSheetAt(lastSheetNumber)
-        val f = if (isUniformly) File("$filePath/output/равномерно_$institute.xlsx")
-        else File("$filePath/output/$institute.xlsx")
+        val f = if (isUniformly) File("$newFilePath/output/равномерно_$institute.xlsx")
+        else File("$newFilePath/output/$institute.xlsx")
         f.createNewFile()
         val outputStream = FileOutputStream(f)
         book.write(outputStream)
