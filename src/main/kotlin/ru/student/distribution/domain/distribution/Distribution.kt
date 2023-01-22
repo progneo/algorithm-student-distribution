@@ -52,7 +52,8 @@ class Distribution(
             notApplied = notApplied,
             projects = projects,
             participations = participations,
-            institute = institute
+            institute = institute,
+            filePath = savedPath
         )
         logResults()
     }
@@ -67,7 +68,8 @@ class Distribution(
             projects = projects,
             participations = participations,
             institute = institute,
-            isUniformly = true
+            isUniformly = true,
+            filePath = savedPath
         )
         logResults()
     }

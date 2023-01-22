@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="Cleaned code for integration">
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ExportDataToExcel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ExportDataToExcel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Distribution.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Distribution.kt" afterDir="false" />
-    </list>
+    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="Added file path configuring" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -167,7 +164,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674387062160</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added file path configuring">
+      <created>1674387251209</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1674387251209</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -188,6 +192,7 @@
     <MESSAGE value="Test release2" />
     <MESSAGE value="Test release3" />
     <MESSAGE value="Cleaned code for integration" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleaned code for integration" />
+    <MESSAGE value="Added file path configuring" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added file path configuring" />
   </component>
 </project>
