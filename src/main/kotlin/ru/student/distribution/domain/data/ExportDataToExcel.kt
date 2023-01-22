@@ -114,8 +114,8 @@ object ExportDataToExcel {
             }
             index++
         }
-        workBook.save(finalPath)
-        deleteExcessLists(finalPath, index, institute, isUniformly)
+        workBook.save(filePath)
+        deleteExcessLists(filePath, index, institute, isUniformly)
     }
 
     private fun deleteExcessLists(filePath: String, lastSheetNumber: Int, institute: String, isUniformly: Boolean) {
