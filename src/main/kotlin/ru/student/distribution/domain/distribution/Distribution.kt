@@ -13,12 +13,13 @@ import ru.student.distribution.util.containsGroup
 
 class Distribution(
     private val students: MutableList<Student>,
-    val projects: MutableList<Project>,
-    val participations: MutableList<Participation>,
+    private val projects: MutableList<Project>,
+    private val participations: MutableList<Participation>,
     private val institute: String,
-    private val specialities: List<String>,
+    private val specialties: List<String>,
     private val specialGroups: List<String>,
-    private val hasSpecialGroups: Boolean = false
+    private val hasSpecialGroups: Boolean = false,
+    private val savedPath: String
 ) {
 
     private val distributionPreparation = DistributionPreparation(

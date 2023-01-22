@@ -18,9 +18,11 @@ object ExportDataToExcel {
         participations: List<Participation>,
         institute: String,
         isUniformly: Boolean = false,
-        filePath: String = if (isUniformly) "F:/yarmarka_data/output/равномерно_$institute.xlsx"
-        else "F:/yarmarka_data/output/$institute.xlsx"
+        filePath: String
     ) {
+        val finalPath = if (isUniformly) "$filePath/равномерно_$institute.xlsx"
+        else "$filePath/$institute.xlsx"
+
         val workBook = Workbook()
         //workBook.worksheets.add()
         var statIndex = 1
@@ -112,18 +114,18 @@ object ExportDataToExcel {
             }
             index++
         }
-        workBook.save(filePath)
-        deleteShit(filePath, index, institute, isUniformly)
+        workBook.save(finalPath)
+        deleteExcessLists(finalPath, index, institute, isUniformly)
     }
 
-    private fun deleteShit(filePath: String, lastSheetNumber: Int, institute: String, isUniformly: Boolean) {
+    private fun deleteExcessLists(filePath: String, lastSheetNumber: Int, institute: String, isUniformly: Boolean) {
 
         val inputStream = FileInputStream(filePath)
         val book = WorkbookFactory.create(inputStream)
 
         book.removeSheetAt(lastSheetNumber)
-        val f = if (isUniformly) File("F:/yarmarka_data/output/output/равномерно_$institute.xlsx")
-        else File("F:/yarmarka_data/output/output/$institute.xlsx")
+        val f = if (isUniformly) File("$filePath/output/равномерно_$institute.xlsx")
+        else File("$filePath/output/$institute.xlsx")
         f.createNewFile()
         val outputStream = FileOutputStream(f)
         book.write(outputStream)
