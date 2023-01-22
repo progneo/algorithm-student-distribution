@@ -52,7 +52,7 @@ object ExportDataToExcel {
         studIndex++
         for (student in notApplied) {
             workSheetStud.getRange("A$studIndex:C$studIndex").value = arrayOf(
-                student.fio,
+                student.name,
                 student.realGroup,
                 student.id
             )
@@ -92,17 +92,17 @@ object ExportDataToExcel {
             participationIndexExcel++
 
             for (p in projectParticipations.sortedBy { it.priority }) {
-                var student = students.find { it.id == p.studentId }
-                if (student == null) {
-                    student = Student(
-                        id = p.studentId,
-                        fio = p.studentName,
-                        realGroup = p.group
-                    )
-                }
+                var student = students.find { it.id == p.studentId }!!
+//                if (student == null) {
+//                    student = Student(
+//                        id = p.studentId,
+//                        name = p.studentName,
+//                        realGroup = p.group
+//                    )
+//                }
 
                 workSheet.getRange("A$participationIndexExcel:F$participationIndexExcel").value = arrayOf(
-                    student.fio,
+                    student.name,
                     student.realGroup,
                     student.id,
                     p.priority,

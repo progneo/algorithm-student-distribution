@@ -6,7 +6,6 @@ import ru.student.distribution.PROJECT_STUDENT_CAPACITY_LOWER_BOUNDARY
 import ru.student.distribution.PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY
 import ru.student.distribution.data.model.Participation
 import ru.student.distribution.data.model.Project
-import ru.student.distribution.data.model.Skill
 import ru.student.distribution.data.model.Student
 import kotlin.math.ceil
 import ru.student.distribution.domain.data.ExportDataToExcel
@@ -162,8 +161,6 @@ class Distribution(
                         priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 5 else 4,
                         projectId = project.id,
                         studentId = bestMatchingStudent.id,
-                        studentName = bestMatchingStudent.fio,
-                        group = bestMatchingStudent.realGroup,
                         stateId = 1
                     )
                 )
@@ -192,8 +189,6 @@ class Distribution(
                             priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 4 else 5,
                             projectId = project.id,
                             studentId = bestMatchingStudent.id,
-                            studentName = bestMatchingStudent.fio,
-                            group = bestMatchingStudent.realGroup,
                             stateId = 1
                         )
                     )
@@ -232,8 +227,6 @@ class Distribution(
                             priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 4 else 5,
                             projectId = project.id,
                             studentId = bestMatchingStudent.id,
-                            studentName = bestMatchingStudent.fio,
-                            group = bestMatchingStudent.realGroup,
                             stateId = 1
                         )
                     )
@@ -261,8 +254,6 @@ class Distribution(
                             priority = 4,
                             projectId = project.id,
                             studentId = bestMatchingStudent.id,
-                            studentName = bestMatchingStudent.fio,
-                            group = bestMatchingStudent.realGroup,
                             stateId = 1
                         )
                     )
@@ -291,7 +282,7 @@ class Distribution(
                     sortedProjects.filter {
 
                         it.id != project.id &&
-                                it.groups.contains(student.training_group) &&
+                                it.groups.contains(student.group) &&
                                 it.freePlaces <= (PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - PROJECT_MIN_CAPACITY)
                     }
 
@@ -304,8 +295,6 @@ class Distribution(
                             priority = 4,
                             projectId = suitedProject.id,
                             studentId = student.id,
-                            studentName = student.fio,
-                            group = student.realGroup,
                             stateId = 1
                         )
                     )
@@ -331,13 +320,13 @@ class Distribution(
 
         for (student in notApplied) {
             if (special) {
-                if (student.training_group == "ИИКб") {
+                if (student.group == "ИИКб") {
                     bestMatchingStudent = student
                     break
                 }
             } else {
-                println("${project.groups} contains ${student.training_group} == ${project.groups.contains(student.training_group)}")
-                if (groupStudent == null && project.groups.contains(student.training_group)) {
+                println("${project.groups} contains ${student.group} == ${project.groups.contains(student.group)}")
+                if (groupStudent == null && project.groups.contains(student.group)) {
                     groupStudent = student
                 }
             }
@@ -349,16 +338,6 @@ class Distribution(
         return bestMatchingStudent
     }
 
-    private fun getSimilarSkillsCount(projectSkills: List<Skill>, studentSkills: List<Skill>): Int {
-        var count = 0
-        for (skill in projectSkills) {
-            if (studentSkills.contains(skill)) {
-                count++
-            }
-        }
-
-        return count
-    }
 
     private fun logResults() {
         println(institute)

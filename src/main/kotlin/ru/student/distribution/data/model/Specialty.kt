@@ -1,6 +1,6 @@
 package ru.student.distribution.data.model
 
-data class State(
+data class Specialty(
     val id: Int,
-    val state: String
+    val name: String
 )

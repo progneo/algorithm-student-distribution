@@ -1,22 +1,12 @@
 package ru.student.distribution.data.model
 
-import ru.student.distribution.PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY
-
 data class Project(
-    var id: Int = 0,
-    var title: String = "",
-    var places: Int = 0,
-    var freePlaces: Int = PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY,
-    var groups: List<String> = emptyList(),
-    var goal: String = "",
-    var description: String = "",
-    var difficulty: Int = 0,
-    var date_start: String = "",
-    var date_end: String = "",
-    var requirements: String = "",
-    var customer: String = "",
-    var study_result: String = "",
-    var product_result: String = "",
-    var supervisors: List<String> = emptyList(),
-    var skills: List<String> = emptyList()
+    var id: Int,
+    var title: String,
+    var places: Int,
+    var freePlaces: Int,
+    var groups: List<String>,
+    var difficulty: Int,
+    var customer: String,
+    var supervisors: List<String>,
 )
