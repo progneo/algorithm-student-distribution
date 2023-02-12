@@ -20,6 +20,7 @@ dependencies {
     implementation("org.apache.commons:commons-csv:1.9.0")
     implementation("com.google.code.gson:gson:2.10")
     implementation("com.grapecity.documents:gcexcel:5.0.3")
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.6.0")
 }
 
 tasks.test {

@@ -1,14 +1,17 @@
 package ru.student.distribution
 
+import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import ru.student.distribution.data.model.Participation
 import ru.student.distribution.data.model.Project
 import ru.student.distribution.data.model.Student
+import ru.student.distribution.domain.data.ImportExcelData
 import ru.student.distribution.domain.distribution.Distribution
+import java.io.File
 
 
 /**
  * Example of launching algorithm
-
+ */
 private fun main() {
     val groups = mapOf("ИСТб" to "ИСТб-1", "АСУб" to "АСУб-1")
     val students = mutableListOf<Student>()
@@ -58,8 +61,8 @@ private fun main() {
         projects = projects,
         participations = participation,
         institute = institute,
-        specialities = specialities,
-        specialGroups = specialGroups
-    ).executeUniformly()
+        specialties = specialities,
+        specialGroups = specialGroups,
+        savedPath = "E:/yarmarka"
+    ).execute()
 }
- */

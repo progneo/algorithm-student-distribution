@@ -1,16 +1,20 @@
-//package ru.student.distribution.domain.data
-//
-//import ru.student.distribution.PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY
-//import ru.student.distribution.data.generation.GenerateProjects
-//import ru.student.distribution.data.model.Project
-//import ru.student.distribution.data.model.Student
-//import ru.student.distribution.data.model.Supervisor
-//import org.apache.poi.xssf.usermodel.XSSFWorkbook
-//import java.io.File
-//import java.io.FileInputStream
-//
-//object ImportExcelData {
-//
+package ru.student.distribution.domain.data
+
+import ru.student.distribution.PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY
+
+import ru.student.distribution.data.model.Project
+import ru.student.distribution.data.model.Student
+import ru.student.distribution.data.model.Supervisor
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileInputStream
+
+class ProjectData {
+    var id: String = ""
+}
+
+object ImportExcelData {
+
 //    fun getProjectsFromDir(filePath: String): List<Project> {
 //        val projects = mutableListOf<Project>()
 //        File(filePath).walk().forEach {
@@ -20,7 +24,7 @@
 //        }
 //        return projects
 //    }
-//
+
 //    fun getProjectsFromFile(filePath: String): List<Project> {
 //        val wb = XSSFWorkbook(FileInputStream(File(filePath)))
 //
@@ -68,7 +72,7 @@
 //        }
 //        return list
 //    }
-//
+
 //    fun getStudentsFromFile(filePath: String): List<Student> {
 //        val wb = XSSFWorkbook(FileInputStream(File(filePath)))
 //
@@ -92,7 +96,29 @@
 //        }
 //        return list
 //    }
+
+//    fun getStudentsFromFile(filePath: String): List<Student> {
+//        val wb = XSSFWorkbook(FileInputStream(File(filePath)))
 //
+//        val sheet = wb.getSheetAt(0)
+//
+//        val list = mutableSetOf<Student>()
+//        for (i in 1..sheet.lastRowNum) {
+//            val row = sheet.getRow(i)
+//
+//            val student = Student()
+//
+//            student.numz = row.getCell(2).numericCellValue.toInt()
+//            student.name = row.getCell(0).stringCellValue
+//            student.group = row.getCell(1).stringCellValue
+//            student.projectId = row.getCell(3).numericCellValue.toInt()
+//            student.projectName = row.getCell(4).stringCellValue
+//
+//            list.add(student)
+//        }
+//        return list.toList()
+//    }
+
 //    fun getStudentsFromFile(filePath: String, exceptionsFilePath: String): Pair<List<Student>, List<Student>> {
 //        val wb = XSSFWorkbook(FileInputStream(File(filePath)))
 //        val wbException = XSSFWorkbook(FileInputStream(File(exceptionsFilePath)))
@@ -149,4 +175,4 @@
 //        }
 //        return Pair(list, exceptionList)
 //    }
-//}
+}

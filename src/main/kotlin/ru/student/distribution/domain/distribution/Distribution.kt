@@ -19,13 +19,16 @@ class Distribution(
     private val specialties: List<String>,
     private val specialGroups: List<String>,
     private val hasSpecialGroups: Boolean = false,
-    private val savedPath: String
+    private val savedPath: String,
 ) {
 
     private val distributionPreparation = DistributionPreparation(
         students = students,
         participations = participations
     )
+
+    private val priorities = mutableMapOf<String, MutableList<Priority>>()
+    //private val sortedPriorities = mapOf<String, MutableList<Priority>>()
 
     private var notApplied = mutableListOf<Student>()
     private var notAppliedStudents = setOf<Int>()
@@ -35,18 +38,20 @@ class Distribution(
 
     init {
         distributionPreparation.prepare()
+        specialties.forEach {
+            priorities[it] = mutableListOf()
+        }
     }
 
     private fun preExecute() {
         distributeParticipations()
         findNotAppliedStudents()
-        if (hasSpecialGroups) distributeSpecialGroups()
+        //if (hasSpecialGroups) distributeSpecialGroups()
     }
 
     fun execute() {
         preExecute()
         distributeSilentStudents()
-        distributeExcessStudents()
         ExportDataToExcel.writeProjectsWithStudents(
             students = students,
             notApplied = notApplied,
@@ -58,21 +63,36 @@ class Distribution(
         logResults()
     }
 
-    fun executeUniformly() {
-        preExecute()
-        distributeSilentStudents(isUniform = true)
-        distributeSilentStudentsToFullUniformly()
-        ExportDataToExcel.writeProjectsWithStudents(
-            students = students,
-            notApplied = notApplied,
-            projects = projects,
-            participations = participations,
-            institute = institute,
-            isUniformly = true,
-            filePath = savedPath
-        )
-        logResults()
-    }
+//    fun execute() {
+//        preExecute()
+//        distributeSilentStudents()
+//        distributeExcessStudents()
+//        ExportDataToExcel.writeProjectsWithStudents(
+//            students = students,
+//            notApplied = notApplied,
+//            projects = projects,
+//            participations = participations,
+//            institute = institute,
+//            filePath = savedPath
+//        )
+//        logResults()
+//    }
+//
+//    fun executeUniformly() {
+//        preExecute()
+//        distributeSilentStudents(isUniform = true)
+//        distributeSilentStudentsToFullUniformly()
+//        ExportDataToExcel.writeProjectsWithStudents(
+//            students = students,
+//            notApplied = notApplied,
+//            projects = projects,
+//            participations = participations,
+//            institute = institute,
+//            isUniformly = true,
+//            filePath = savedPath
+//        )
+//        logResults()
+//    }
 
     private fun distributeParticipations() {
         for (priority in (1..3)) {
@@ -101,7 +121,6 @@ class Distribution(
                                 participations[participations.indexOf(j)].stateId = 2
                             }
                             project.freePlaces--
-                            //projects[projects.indexOf(project)].freePlaces--
                         }
                     }
                 }
@@ -151,196 +170,269 @@ class Distribution(
         return highDemandProjects + lowDemandProjects
     }
 
-    private fun distributeSpecialGroups() {
-        val specialGroups = listOf<String>("ИИКб")
-        for (gr in specialGroups) {
-            val project = projects.find { it.groups.contains(gr) }!!
-            var bestMatchingStudent: Student? = findBestMatch(project = project)
+    private fun initPriorities() {
+        projects.forEach { project ->
+            project.groups.forEach { group ->
+                val koef = evaluateKoef(students, participations, group, project)
+                if (koef != 0f) {
+                    priorities[group]!!.add(
+                        Priority(project.id, koef)
+                    )
+                }
+            }
+        }
+    }
 
-            while (bestMatchingStudent != null) {
+    private fun distributeSilentStudents() {
+        val sortedMap = priorities.toList().sortedBy { (key, value) -> value.size }.toMap()
+
+        sortedMap.forEach { entry ->
+            val studentsForProjects = notApplied.filter { it.group == entry.key }.toMutableList()
+
+            while (studentsForProjects.isNotEmpty() && sortedMap[entry.key]!!.isNotEmpty()) {
+                val maxPriority = entry.value.maxBy { it.koef }
+                val student = studentsForProjects[0]
+
                 participations.add(
                     Participation(
                         id = participationIndex++,
-                        priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 5 else 4,
-                        projectId = project.id,
-                        studentId = bestMatchingStudent.id,
+                        priority = if (notAppliedStudents.contains(student.id)) 4 else 5,
+                        projectId = maxPriority.projectId,
+                        studentId = student.id,
                         stateId = 1
                     )
                 )
-                projects[projects.indexOfFirst { it.id == project.id }].freePlaces--
-
-                bestMatchingStudent = findBestMatch(project = project)
+                projects.find { it.id == maxPriority.projectId }!!.freePlaces--
+                updateKoef(sortedMap, entry.key, maxPriority.projectId, students, participations, projects)
+                notApplied.removeIf { stud -> stud.id == studentsForProjects[0].id }
+                studentsForProjects.removeIf { stud -> stud.id == studentsForProjects[0].id }
             }
         }
     }
 
-    private fun distributeSilentStudents(isUniform: Boolean = false) {
-        for (project in sortProjectList()) {
-            val places: Int = if (isUniform) {
-                project.freePlaces - (PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - PROJECT_STUDENT_CAPACITY_LOWER_BOUNDARY)
-            } else {
-                project.freePlaces
-                //project.freePlaces - (ru.student.distribution.PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - ru.student.distribution.PROJECT_STUDENT_CAPACITY_LOWER_BOUNDARY)
-            }
-            for (i in 0 until places) {
-                val bestMatchingStudent: Student? = findBestMatch(project = project)
+//    private fun distributeSpecialGroups() {
+//        val specialGroups = listOf<String>("ИИКб")
+//        for (gr in specialGroups) {
+//            val project = projects.find { it.groups.contains(gr) }!!
+//            var bestMatchingStudent: Student? = findBestMatch(project = project)
+//
+//            while (bestMatchingStudent != null) {
+//                participations.add(
+//                    Participation(
+//                        id = participationIndex++,
+//                        priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 5 else 4,
+//                        projectId = project.id,
+//                        studentId = bestMatchingStudent.id,
+//                        stateId = 1
+//                    )
+//                )
+//                projects[projects.indexOfFirst { it.id == project.id }].freePlaces--
+//
+//                bestMatchingStudent = findBestMatch(project = project)
+//            }
+//        }
+//    }
 
-                if (bestMatchingStudent != null) {
-                    participations.add(
-                        Participation(
-                            id = participationIndex++,
-                            priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 4 else 5,
-                            projectId = project.id,
-                            studentId = bestMatchingStudent.id,
-                            stateId = 1
-                        )
-                    )
-                    projects[projects.indexOf(project)].freePlaces--
-                } else {
-                    break
-                }
-            }
-        }
+//    private fun distributeSilentStudents(isUniform: Boolean = false) {
+//        for (project in sortProjectList()) {
+//            val places: Int = if (isUniform) {
+//                project.freePlaces - (PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - PROJECT_STUDENT_CAPACITY_LOWER_BOUNDARY)
+//            } else {
+//                project.freePlaces
+//                //project.freePlaces - (ru.student.distribution.PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - ru.student.distribution.PROJECT_STUDENT_CAPACITY_LOWER_BOUNDARY)
+//            }
+//            for (i in 0 until places) {
+//                val bestMatchingStudent: Student? = findBestMatch(project = project)
+//
+//                if (bestMatchingStudent != null) {
+//                    participations.add(
+//                        Participation(
+//                            id = participationIndex++,
+//                            priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 4 else 5,
+//                            projectId = project.id,
+//                            studentId = bestMatchingStudent.id,
+//                            stateId = 1
+//                        )
+//                    )
+//                    projects[projects.indexOf(project)].freePlaces--
+//                } else {
+//                    break
+//                }
+//            }
+//        }
+//      }
+
+//    private fun distributeSilentStudentsToFullUniformly() {
+//        val projects = projects
+//            .filter { !containsGroup(it, specialGroups) }
+//            .sortedBy { it.freePlaces }
+//            .reversed()
+//
+//        var areProjectsFull = false
+//        var maxFreeStudentsCount = projects.maxOfOrNull { it.freePlaces }!!
+//        println(maxFreeStudentsCount)
+//
+//        while (!areProjectsFull && notApplied.isNotEmpty()) {
+//            var notAppliedSizeBefore = notApplied.size
+//            for (project in projects) {
+//                if (project.freePlaces == 0) continue
+//                if (maxFreeStudentsCount <= 0) break
+//                //if (project.freePlaces != maxFreeStudentsCount) continue
+//
+//                val bestMatchingStudent = findBestMatch(project = project)
+//                //println("projectId = ${project.id} - $bestMatchingStudent")
+//                if (bestMatchingStudent != null) {
+//                    println(bestMatchingStudent)
+//                    participations.add(
+//                        Participation(
+//                            id = participationIndex++,
+//                            priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 4 else 5,
+//                            projectId = project.id,
+//                            studentId = bestMatchingStudent.id,
+//                            stateId = 1
+//                        )
+//                    )
+//                    notApplied.removeIf { it.id == bestMatchingStudent.id }
+//                    projects[projects.indexOf(project)].freePlaces--
+//                    maxFreeStudentsCount = projects.maxOfOrNull { it.freePlaces }!!
+//                }
+//            }
+//            if (notAppliedSizeBefore == notApplied.size) {
+//                areProjectsFull = true
+//            }
+//        }
+//    }
+
+//    private fun distributeSilentStudentsToFull() {
+//        for (project in sortProjectList()) {
+//            val places = PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - project.freePlaces
+//            for (i in 0 until places) {
+//                val bestMatchingStudent: Student? = findBestMatch(project = project)
+//
+//                if (bestMatchingStudent != null) {
+//                    participations.add(
+//                        Participation(
+//                            id = participationIndex++,
+//                            priority = 4,
+//                            projectId = project.id,
+//                            studentId = bestMatchingStudent.id,
+//                            stateId = 1
+//                        )
+//                    )
+//                    projects[projects.indexOfFirst { it.id == project.id }].freePlaces--
+//                } else {
+//                    break
+//                }
+//            }
+//        }
+//    }
+
+//    private fun distributeExcessStudents() {
+//        val excessProjects =
+//            projects.filter { it.freePlaces > (PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - PROJECT_MIN_CAPACITY) && it.freePlaces != it.places }
+//                .reversed()
+//
+//        val sortedProjects = projects.sortedBy { it.freePlaces }
+//
+//        for (project in excessProjects) {
+//
+//            val excessParticipations = participations.filter { it.projectId == project.id && it.stateId == 1 }
+//
+//            for (i in excessParticipations) {
+//                val student = students.find { it.id == i.studentId }!!
+//                val suitedProjects =
+//                    sortedProjects.filter {
+//
+//                        it.id != project.id &&
+//                                it.groups.contains(student.group) &&
+//                                it.freePlaces <= (PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - PROJECT_MIN_CAPACITY)
+//                    }
+//
+//                val suitedProject = suitedProjects.maxByOrNull { it.freePlaces }
+//                if (suitedProject != null) {
+//                    participations.remove(i)
+//                    participations.add(
+//                        Participation(
+//                            id = participationIndex++,
+//                            priority = 4,
+//                            projectId = suitedProject.id,
+//                            studentId = student.id,
+//                            stateId = 1
+//                        )
+//                    )
+//
+//                    projects[projects.indexOf(project)].freePlaces++
+//
+//                    projects[projects.indexOf(suitedProject)].freePlaces--
+//
+//                }
+//            }
+//        }
+//    }
+
+//    private fun findBestMatch(project: Project): Student? {
+//        var bestMatchingStudent: Student? = null
+//        var special = project.groups.contains("ИИКб")
+//
+//        if (notApplied.isEmpty()) {
+//            return null
+//        }
+//
+//        var groupStudent: Student? = null
+//
+//        for (student in notApplied) {
+//            if (special) {
+//                if (student.group == "ИИКб") {
+//                    bestMatchingStudent = student
+//                    break
+//                }
+//            } else {
+//                println("${project.groups} contains ${student.group} == ${project.groups.contains(student.group)}")
+//                if (groupStudent == null && project.groups.contains(student.group)) {
+//                    groupStudent = student
+//                }
+//            }
+//        }
+//
+//        if (!special) bestMatchingStudent = groupStudent
+//
+//        notApplied.removeIf { it.id == bestMatchingStudent?.id }
+//        return bestMatchingStudent
+//    }
+
+    private fun evaluateKoef(
+        students: List<Student>,
+        participation: List<Participation>,
+        group: String,
+        project: Project,
+    ): Float {
+        val groupStudents = students.count { it.group == group }
+        val groupFreeStudents =
+            students.count { it.group == group && participation.find { part -> part.studentId == it.id } == null }
+        val koef = (project.freePlaces * 1.0f / project.places) * (groupFreeStudents * 1.0f / groupStudents)
+
+        return koef
     }
 
-    private fun distributeSilentStudentsToFullUniformly() {
-        val projects = projects
-            .filter { !containsGroup(it, specialGroups) }
-            .sortedBy { it.freePlaces }
-            .reversed()
+    private fun updateKoef(
+        map: Map<String, MutableList<Priority>>,
+        group: String,
+        projectId: Int,
+        students: List<Student>,
+        participation: List<Participation>,
+        projects: List<Project>,
+    ) {
+        val project = projects.find { it.id == projectId }!!
+        val koef = evaluateKoef(students, participation, group, project)
 
-        var areProjectsFull = false
-        var maxFreeStudentsCount = projects.maxOfOrNull { it.freePlaces }!!
-        println(maxFreeStudentsCount)
-
-        while (!areProjectsFull && notApplied.isNotEmpty()) {
-            var notAppliedSizeBefore = notApplied.size
-            for (project in projects) {
-                if (project.freePlaces == 0) continue
-                if (maxFreeStudentsCount <= 0) break
-                //if (project.freePlaces != maxFreeStudentsCount) continue
-
-                val bestMatchingStudent = findBestMatch(project = project)
-                //println("projectId = ${project.id} - $bestMatchingStudent")
-                if (bestMatchingStudent != null) {
-                    println(bestMatchingStudent)
-                    participations.add(
-                        Participation(
-                            id = participationIndex++,
-                            priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 4 else 5,
-                            projectId = project.id,
-                            studentId = bestMatchingStudent.id,
-                            stateId = 1
-                        )
-                    )
-                    notApplied.removeIf { it.id == bestMatchingStudent.id }
-                    projects[projects.indexOf(project)].freePlaces--
-                    maxFreeStudentsCount = projects.maxOfOrNull { it.freePlaces }!!
-                }
+        if (koef == 0f) {
+            map.forEach {
+                map[it.key]!!.removeIf { item -> item.projectId == projectId }
             }
-            if (notAppliedSizeBefore == notApplied.size) {
-                areProjectsFull = true
-            }
+        } else {
+            map[group]!!.find { it.projectId == project.id }!!.koef = koef
         }
     }
-
-    private fun distributeSilentStudentsToFull() {
-        for (project in sortProjectList()) {
-            val places = PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - project.freePlaces
-            for (i in 0 until places) {
-                val bestMatchingStudent: Student? = findBestMatch(project = project)
-
-                if (bestMatchingStudent != null) {
-                    participations.add(
-                        Participation(
-                            id = participationIndex++,
-                            priority = 4,
-                            projectId = project.id,
-                            studentId = bestMatchingStudent.id,
-                            stateId = 1
-                        )
-                    )
-                    projects[projects.indexOfFirst { it.id == project.id }].freePlaces--
-                } else {
-                    break
-                }
-            }
-        }
-    }
-
-    private fun distributeExcessStudents() {
-        val excessProjects =
-            projects.filter { it.freePlaces > (PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - PROJECT_MIN_CAPACITY) && it.freePlaces != it.places }
-                .reversed()
-
-        val sortedProjects = projects.sortedBy { it.freePlaces }
-
-        for (project in excessProjects) {
-
-            val excessParticipations = participations.filter { it.projectId == project.id && it.stateId == 1 }
-
-            for (i in excessParticipations) {
-                val student = students.find { it.id == i.studentId }!!
-                val suitedProjects =
-                    sortedProjects.filter {
-
-                        it.id != project.id &&
-                                it.groups.contains(student.group) &&
-                                it.freePlaces <= (PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - PROJECT_MIN_CAPACITY)
-                    }
-
-                val suitedProject = suitedProjects.maxByOrNull { it.freePlaces }
-                if (suitedProject != null) {
-                    participations.remove(i)
-                    participations.add(
-                        Participation(
-                            id = participationIndex++,
-                            priority = 4,
-                            projectId = suitedProject.id,
-                            studentId = student.id,
-                            stateId = 1
-                        )
-                    )
-
-                    projects[projects.indexOf(project)].freePlaces++
-
-                    projects[projects.indexOf(suitedProject)].freePlaces--
-
-                }
-            }
-        }
-    }
-
-    private fun findBestMatch(project: Project): Student? {
-        var bestMatchingStudent: Student? = null
-        var special = project.groups.contains("ИИКб")
-
-        if (notApplied.isEmpty()) {
-            return null
-        }
-
-        var groupStudent: Student? = null
-
-        for (student in notApplied) {
-            if (special) {
-                if (student.group == "ИИКб") {
-                    bestMatchingStudent = student
-                    break
-                }
-            } else {
-                println("${project.groups} contains ${student.group} == ${project.groups.contains(student.group)}")
-                if (groupStudent == null && project.groups.contains(student.group)) {
-                    groupStudent = student
-                }
-            }
-        }
-
-        if (!special) bestMatchingStudent = groupStudent
-
-        notApplied.removeIf { it.id == bestMatchingStudent?.id }
-        return bestMatchingStudent
-    }
-
 
     private fun logResults() {
         println(institute)
