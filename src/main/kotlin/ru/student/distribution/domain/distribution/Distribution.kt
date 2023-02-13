@@ -1,7 +1,5 @@
 package ru.student.distribution.domain.distribution
 
-import ru.student.distribution.PROJECT_STUDENT_CAPACITY_LOWER_BOUNDARY
-import ru.student.distribution.PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY
 import ru.student.distribution.data.model.Participation
 import ru.student.distribution.data.model.Project
 import ru.student.distribution.data.model.Student
@@ -16,6 +14,7 @@ class Distribution(
     private val specialGroups: List<String>,
     private val hasSpecialGroups: Boolean = false,
     private val savedPath: String,
+    private val distributionRule: DistributionRule
 ) {
 
     private val distributionPreparation = DistributionPreparation(
@@ -184,7 +183,7 @@ class Distribution(
     private fun distributeSilentStudents(isUniformly: Boolean = true) {
         val sortedPriorities = priorities.toList().sortedBy { (key, value) -> value.size }.toMap()
         val freePlacesBoundary =
-            if (isUniformly) PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - PROJECT_STUDENT_CAPACITY_LOWER_BOUNDARY
+            if (isUniformly) distributionRule.maxPlaces - distributionRule.minPlaces
             else 0
 
         sortedPriorities.forEach { entry ->
@@ -223,7 +222,7 @@ class Distribution(
         var sortedProjects = projects.filter { it.freePlaces != 0 }
         var lowerValue = sortedProjects.minBy { it.busyPlaces }.busyPlaces
 
-        while (lowerValue < PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY && notApplied.isNotEmpty()) {
+        while (lowerValue < distributionRule.maxPlaces && notApplied.isNotEmpty()) {
             sortedProjects = sortedProjects
                 .sortedWith(compareBy({ it.busyPlaces }, { it.groups.size }))
 

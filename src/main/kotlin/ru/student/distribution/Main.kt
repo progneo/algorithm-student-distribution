@@ -4,6 +4,7 @@ import ru.student.distribution.data.model.Participation
 import ru.student.distribution.data.model.Project
 import ru.student.distribution.data.model.Student
 import ru.student.distribution.domain.distribution.Distribution
+import ru.student.distribution.domain.distribution.DistributionRule
 
 
 /**
@@ -62,6 +63,7 @@ private fun main() {
         institute = institute,
         specialties = specialities,
         specialGroups = specialGroups,
-        savedPath = "E:/yarmarka/"
+        savedPath = "E:/yarmarka/",
+        distributionRule = DistributionRule(15, 9)
     ).execute()
 }
