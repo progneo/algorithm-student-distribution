@@ -67,3 +67,71 @@ private fun main() {
         distributionRule = DistributionRule(15, 9)
     ).execute()
 }
+
+//private fun main() {
+//    val groups = listOf("1", "2", "3")
+//    val students = mutableListOf<Student>(
+//        Student(1, "1", "1", "1",),
+//        Student(2, "1", "1", "1",),
+//        Student(3, "3", "3", "3",),
+//        Student(4, "1", "1", "1",),
+//        Student(5, "3", "3", "3",),
+//        Student(6, "3", "3", "3",),
+//        Student(7, "3", "3", "3",),
+//        Student(8, "1", "1", "1",),
+//        Student(9, "2", "2", "2",),
+//    )
+//    val projects = mutableListOf<Project>(
+//        Project(
+//            id = 1,
+//            title = "Project 1",
+//            groups = listOf("1", "2", "3"),
+//            places = 3,
+//            freePlaces = 3,
+//            busyPlaces = 0,
+//            supervisors = listOf("Supervisor 1"),
+//            difficulty = 1,
+//            customer = ""
+//        ),
+//        Project(
+//            id = 2,
+//            title = "Project 2",
+//            groups = listOf("1", "2", "3"),
+//            places = 3,
+//            freePlaces = 3,
+//            busyPlaces = 0,
+//            supervisors = listOf("Supervisor 2"),
+//            difficulty = 1,
+//            customer = ""
+//        ),
+//        Project(
+//            id = 3,
+//            title = "Project 2",
+//            groups = listOf("3"),
+//            places = 3,
+//            freePlaces = 3,
+//            busyPlaces = 0,
+//            supervisors = listOf("Supervisor 3"),
+//            difficulty = 1,
+//            customer = ""
+//        ),
+//    )
+//    val participation = mutableListOf<Participation>()
+//
+//    participation.add(Participation(id = 0, priority = 1, projectId = 2, studentId = 1, stateId = 0))
+//    participation.add(Participation(id = 1, priority = 1, projectId = 2, studentId = 3, stateId = 0))
+//
+//    val institute = "Institute"
+//    val specialGroups = mutableListOf<String>()
+//
+//    Distribution(
+//        students = students,
+//        projects = projects,
+//        participations = participation,
+//        institute = institute,
+//        specialties = groups,
+//        specialGroups = specialGroups,
+//        savedPath = "E:/yarmarka/",
+//        distributionRule = DistributionRule(3, 0)
+//    ).execute()
+//}

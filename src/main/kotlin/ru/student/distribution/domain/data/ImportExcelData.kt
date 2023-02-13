@@ -1,6 +1,5 @@
 package ru.student.distribution.domain.data
 
-import ru.student.distribution.PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY
 
 import ru.student.distribution.data.model.Project
 import ru.student.distribution.data.model.Student
