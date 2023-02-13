@@ -1,15 +1,11 @@
 package ru.student.distribution.domain.distribution
 
-import ru.student.distribution.PROJECT_LOWER_DEMAND_COEFFICIENT
-import ru.student.distribution.PROJECT_MIN_CAPACITY
 import ru.student.distribution.PROJECT_STUDENT_CAPACITY_LOWER_BOUNDARY
 import ru.student.distribution.PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY
 import ru.student.distribution.data.model.Participation
 import ru.student.distribution.data.model.Project
 import ru.student.distribution.data.model.Student
-import kotlin.math.ceil
 import ru.student.distribution.domain.data.ExportDataToExcel
-import ru.student.distribution.util.containsGroup
 
 class Distribution(
     private val students: MutableList<Student>,
@@ -51,6 +47,7 @@ class Distribution(
 
     fun execute() {
         preExecute()
+        initPriorities()
         distributeSilentStudents()
         ExportDataToExcel.writeProjectsWithStudents(
             students = students,
@@ -121,6 +118,7 @@ class Distribution(
                                 participations[participations.indexOf(j)].stateId = 2
                             }
                             project.freePlaces--
+                            project.busyPlaces++
                         }
                     }
                 }
@@ -144,31 +142,31 @@ class Distribution(
         }
     }
 
-    private fun sortProjectList(): List<Project> {
-        val list = mutableListOf<Project>()
-
-        for (project in projects) {
-            if (project.freePlaces != 0) {
-                list.add(project)
-            }
-        }
-
-        val firstlySorted = list.sortedBy { it.freePlaces }
-        val highDemandProjects =
-            firstlySorted.filter { it.freePlaces <= ceil(PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY * PROJECT_LOWER_DEMAND_COEFFICIENT) }
-        val lowDemandProjects = firstlySorted.subtract(highDemandProjects.toSet()).toMutableList()
-        val toEnd = mutableListOf<Project>()
-
-        for (project in lowDemandProjects) {
-            if (highDemandProjects.find { it.supervisors[0] == project.supervisors[0] } != null) {
-                toEnd.add(project)
-            }
-        }
-        lowDemandProjects.removeAll(toEnd)
-        lowDemandProjects.addAll(toEnd)
-
-        return highDemandProjects + lowDemandProjects
-    }
+//    private fun sortProjectList(): List<Project> {
+//        val list = mutableListOf<Project>()
+//
+//        for (project in projects) {
+//            if (project.freePlaces != 0) {
+//                list.add(project)
+//            }
+//        }
+//
+//        val firstlySorted = list.sortedBy { it.freePlaces }
+//        val highDemandProjects =
+//            firstlySorted.filter { it.freePlaces <= ceil(PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY * PROJECT_LOWER_DEMAND_COEFFICIENT) }
+//        val lowDemandProjects = firstlySorted.subtract(highDemandProjects.toSet()).toMutableList()
+//        val toEnd = mutableListOf<Project>()
+//
+//        for (project in lowDemandProjects) {
+//            if (highDemandProjects.find { it.supervisors[0] == project.supervisors[0] } != null) {
+//                toEnd.add(project)
+//            }
+//        }
+//        lowDemandProjects.removeAll(toEnd)
+//        lowDemandProjects.addAll(toEnd)
+//
+//        return highDemandProjects + lowDemandProjects
+//    }
 
     private fun initPriorities() {
         projects.forEach { project ->
@@ -183,14 +181,24 @@ class Distribution(
         }
     }
 
-    private fun distributeSilentStudents() {
-        val sortedMap = priorities.toList().sortedBy { (key, value) -> value.size }.toMap()
+    private fun distributeSilentStudents(isUniformly: Boolean = true) {
+        val sortedPriorities = priorities.toList().sortedBy { (key, value) -> value.size }.toMap()
+        val freePlacesBoundary =
+            if (isUniformly) PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY - PROJECT_STUDENT_CAPACITY_LOWER_BOUNDARY
+            else 0
 
-        sortedMap.forEach { entry ->
-            val studentsForProjects = notApplied.filter { it.group == entry.key }.toMutableList()
+        sortedPriorities.forEach { entry ->
+            val studentsForProjects = notApplied.filter { it.groupFamily == entry.key }.toMutableList()
 
-            while (studentsForProjects.isNotEmpty() && sortedMap[entry.key]!!.isNotEmpty()) {
+            while (studentsForProjects.isNotEmpty() && sortedPriorities[entry.key]!!.isNotEmpty()) {
                 val maxPriority = entry.value.maxBy { it.koef }
+                val project = projects.find { maxPriority.projectId == it.id }!!
+
+                if (project.freePlaces <= freePlacesBoundary) {
+                    sortedPriorities[entry.key]!!.removeIf { it.projectId == project.id }
+                    continue
+                }
+
                 val student = studentsForProjects[0]
 
                 participations.add(
@@ -203,12 +211,97 @@ class Distribution(
                     )
                 )
                 projects.find { it.id == maxPriority.projectId }!!.freePlaces--
-                updateKoef(sortedMap, entry.key, maxPriority.projectId, students, participations, projects)
+                updateKoef(sortedPriorities, entry.key, maxPriority.projectId, students, participations, projects)
+                updateKoef(priorities, entry.key, maxPriority.projectId, students, participations, projects)
                 notApplied.removeIf { stud -> stud.id == studentsForProjects[0].id }
                 studentsForProjects.removeIf { stud -> stud.id == studentsForProjects[0].id }
             }
         }
     }
+
+    private fun distributeSilentStudentsUniformlyToFull() {
+        var sortedProjects = projects.filter { it.freePlaces != 0 }
+        var lowerValue = sortedProjects.minBy { it.busyPlaces }.busyPlaces
+
+        while (lowerValue < PROJECT_STUDENT_CAPACITY_UPPER_BOUNDARY && notApplied.isNotEmpty()) {
+            sortedProjects = sortedProjects
+                .sortedWith(compareBy({ it.busyPlaces }, { it.groups.size }))
+
+            sortedProjects.forEach { project ->
+                if (project.busyPlaces == lowerValue) {
+                    val groupPriorities = mutableMapOf<String, Float>()
+                    project.groups.forEach { group ->
+                        groupPriorities[group] = priorities[group]!!.find { it.projectId == project.id }!!.koef
+                    }
+
+                    val groupToEnroll = groupPriorities.maxBy { (key, value) -> value }
+
+                    try {
+                        val student = students.first { it.groupFamily == groupToEnroll.key }
+
+                        participations.add(
+                            Participation(
+                                id = participationIndex++,
+                                priority = if (notAppliedStudents.contains(student.id)) 4 else 5,
+                                projectId = project.id,
+                                stateId = 1,
+                                studentId = student.id
+                            )
+                        )
+
+                        notApplied.removeIf { it.id == student.id }
+                        updateKoef(priorities, groupToEnroll.key, project.id, students, participations, projects)
+                        sortedProjects.find { it.id == project.id }!!.apply {
+                            busyPlaces++
+                            freePlaces--
+                        }
+                        lowerValue = sortedProjects.minBy { it.busyPlaces }.busyPlaces
+                    } catch (_: NoSuchElementException) {}
+                }
+            }
+        }
+    }
+
+//    private fun distributeSilentStudentsToFullUniformly() {
+//        val projects = projects
+//            .filter { !containsGroup(it, specialGroups) }
+//            .sortedBy { it.freePlaces }
+//            .reversed()
+//
+//        var areProjectsFull = false
+//        var maxFreeStudentsCount = projects.maxOfOrNull { it.freePlaces }!!
+//        println(maxFreeStudentsCount)
+//
+//        while (!areProjectsFull && notApplied.isNotEmpty()) {
+//            var notAppliedSizeBefore = notApplied.size
+//            for (project in projects) {
+//                if (project.freePlaces == 0) continue
+//                if (maxFreeStudentsCount <= 0) break
+//                //if (project.freePlaces != maxFreeStudentsCount) continue
+//
+//                val bestMatchingStudent = findBestMatch(project = project)
+//                //println("projectId = ${project.id} - $bestMatchingStudent")
+//                if (bestMatchingStudent != null) {
+//                    println(bestMatchingStudent)
+//                    participations.add(
+//                        Participation(
+//                            id = participationIndex++,
+//                            priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 4 else 5,
+//                            projectId = project.id,
+//                            studentId = bestMatchingStudent.id,
+//                            stateId = 1
+//                        )
+//                    )
+//                    notApplied.removeIf { it.id == bestMatchingStudent.id }
+//                    projects[projects.indexOf(project)].freePlaces--
+//                    maxFreeStudentsCount = projects.maxOfOrNull { it.freePlaces }!!
+//                }
+//            }
+//            if (notAppliedSizeBefore == notApplied.size) {
+//                areProjectsFull = true
+//            }
+//        }
+//    }
 
 //    private fun distributeSpecialGroups() {
 //        val specialGroups = listOf<String>("ИИКб")
@@ -262,46 +355,7 @@ class Distribution(
 //        }
 //      }
 
-//    private fun distributeSilentStudentsToFullUniformly() {
-//        val projects = projects
-//            .filter { !containsGroup(it, specialGroups) }
-//            .sortedBy { it.freePlaces }
-//            .reversed()
-//
-//        var areProjectsFull = false
-//        var maxFreeStudentsCount = projects.maxOfOrNull { it.freePlaces }!!
-//        println(maxFreeStudentsCount)
-//
-//        while (!areProjectsFull && notApplied.isNotEmpty()) {
-//            var notAppliedSizeBefore = notApplied.size
-//            for (project in projects) {
-//                if (project.freePlaces == 0) continue
-//                if (maxFreeStudentsCount <= 0) break
-//                //if (project.freePlaces != maxFreeStudentsCount) continue
-//
-//                val bestMatchingStudent = findBestMatch(project = project)
-//                //println("projectId = ${project.id} - $bestMatchingStudent")
-//                if (bestMatchingStudent != null) {
-//                    println(bestMatchingStudent)
-//                    participations.add(
-//                        Participation(
-//                            id = participationIndex++,
-//                            priority = if (notAppliedStudents.contains(bestMatchingStudent.id)) 4 else 5,
-//                            projectId = project.id,
-//                            studentId = bestMatchingStudent.id,
-//                            stateId = 1
-//                        )
-//                    )
-//                    notApplied.removeIf { it.id == bestMatchingStudent.id }
-//                    projects[projects.indexOf(project)].freePlaces--
-//                    maxFreeStudentsCount = projects.maxOfOrNull { it.freePlaces }!!
-//                }
-//            }
-//            if (notAppliedSizeBefore == notApplied.size) {
-//                areProjectsFull = true
-//            }
-//        }
-//    }
+
 
 //    private fun distributeSilentStudentsToFull() {
 //        for (project in sortProjectList()) {
@@ -406,9 +460,9 @@ class Distribution(
         group: String,
         project: Project,
     ): Float {
-        val groupStudents = students.count { it.group == group }
+        val groupStudents = students.count { it.groupFamily == group }
         val groupFreeStudents =
-            students.count { it.group == group && participation.find { part -> part.studentId == it.id } == null }
+            students.count { it.groupFamily == group && participation.find { part -> part.studentId == it.id } == null }
         val koef = (project.freePlaces * 1.0f / project.places) * (groupFreeStudents * 1.0f / groupStudents)
 
         return koef
@@ -423,14 +477,33 @@ class Distribution(
         projects: List<Project>,
     ) {
         val project = projects.find { it.id == projectId }!!
-        val koef = evaluateKoef(students, participation, group, project)
 
-        if (koef == 0f) {
-            map.forEach {
-                map[it.key]!!.removeIf { item -> item.projectId == projectId }
+        project.groups.forEach projectGroups@ {
+            val koef = evaluateKoef(students, participation, it, project)
+
+            if (koef == 0f) {
+                map.forEach { entry ->
+                    map[entry.key]!!.removeIf { item -> item.projectId == projectId }
+                    return@projectGroups
+                }
+            } else {
+                map[group]!!.find { it.projectId == project.id }!!.koef = koef
             }
-        } else {
-            map[group]!!.find { it.projectId == project.id }!!.koef = koef
+        }
+
+        map[group]!!.forEach {  priority ->
+            if (priority.projectId != projectId) {
+                val groupProject = projects.find { it.id == priority.projectId }!!
+                val koef = evaluateKoef(students, participation, group, groupProject)
+
+                if (koef == 0f) {
+                    map.forEach { entry ->
+                        map[entry.key]!!.removeIf { item -> item.projectId == projectId }
+                    }
+                } else {
+                    map[group]!!.find { it.projectId == groupProject.id }!!.koef = koef
+                }
+            }
         }
     }
 

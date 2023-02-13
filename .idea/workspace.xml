@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="Fixed filePath">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Priority.kt" afterDir="false" />
+    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="Reworked the main idea to priorities">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Project.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Project.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Student.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Student.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportExcelData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportExcelData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ExportDataToExcel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ExportDataToExcel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Distribution.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Distribution.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -221,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674388591290</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Reworked the main idea to priorities">
+      <created>1676203199885</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1676203199885</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -244,6 +250,7 @@
     <MESSAGE value="Cleaned code for integration" />
     <MESSAGE value="Added file path configuring" />
     <MESSAGE value="Fixed filePath" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed filePath" />
+    <MESSAGE value="Reworked the main idea to priorities" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reworked the main idea to priorities" />
   </component>
 </project>

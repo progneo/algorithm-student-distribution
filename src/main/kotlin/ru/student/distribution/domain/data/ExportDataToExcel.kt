@@ -55,7 +55,7 @@ object ExportDataToExcel {
         for (student in notApplied) {
             workSheetStud.getRange("A$studIndex:C$studIndex").value = arrayOf(
                 student.name,
-                student.realGroup,
+                student.fullGroupName,
                 student.id
             )
             studIndex++
@@ -105,7 +105,7 @@ object ExportDataToExcel {
 
                 workSheet.getRange("A$participationIndexExcel:F$participationIndexExcel").value = arrayOf(
                     student.name,
-                    student.realGroup,
+                    student.fullGroupName,
                     student.id,
                     p.priority,
                     if (p.priority == 5) "Молчун" else if (p.priority == 4) "Не попал на свои проекты по заявкам" else "Активный"
@@ -115,17 +115,17 @@ object ExportDataToExcel {
             index++
         }
         workBook.save(finalPath)
-        deleteExcessLists(finalPath, index, institute, isUniformly)
+        deleteExcessLists(finalPath, filePath, index, institute, isUniformly)
     }
 
-    private fun deleteExcessLists(filePath: String, lastSheetNumber: Int, institute: String, isUniformly: Boolean) {
+    private fun deleteExcessLists(filePath: String, newFilePath: String, lastSheetNumber: Int, institute: String, isUniformly: Boolean) {
 
         val inputStream = FileInputStream(filePath)
         val book = WorkbookFactory.create(inputStream)
 
         book.removeSheetAt(lastSheetNumber)
-        val f = if (isUniformly) File("$filePath/output/равномерно_$institute.xlsx")
-        else File("$filePath/output/$institute.xlsx")
+        val f = if (isUniformly) File("$newFilePath/output/равномерно_$institute.xlsx")
+        else File("$newFilePath/output/$institute.xlsx")
         f.createNewFile()
         val outputStream = FileOutputStream(f)
         book.write(outputStream)

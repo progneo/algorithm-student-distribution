@@ -1,12 +1,9 @@
 package ru.student.distribution
 
-import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
 import ru.student.distribution.data.model.Participation
 import ru.student.distribution.data.model.Project
 import ru.student.distribution.data.model.Student
-import ru.student.distribution.domain.data.ImportExcelData
 import ru.student.distribution.domain.distribution.Distribution
-import java.io.File
 
 
 /**
@@ -19,7 +16,7 @@ private fun main() {
         val groupName = if (it < 15) "АСУб" else "ИСТб"
         val groupNumber = groups[groupName]!!
         students.add(
-            Student(id = it, name = "Name $it", group = groupName, realGroup = groupNumber)
+            Student(id = it, name = "Name $it", groupFamily = groupName, fullGroupName = groupNumber)
         )
     }
     val projects = mutableListOf<Project>(
@@ -29,6 +26,7 @@ private fun main() {
             groups = listOf("ИСТб", "АСУб"),
             places = 15,
             freePlaces = 15,
+            busyPlaces = 0,
             supervisors = listOf("Supervisor 1"),
             difficulty = 1,
             customer = ""
@@ -39,6 +37,7 @@ private fun main() {
             groups = listOf("АСУб"),
             places = 15,
             freePlaces = 15,
+            busyPlaces = 0,
             supervisors = listOf("Supervisor 2"),
             difficulty = 1,
             customer = ""
@@ -63,6 +62,6 @@ private fun main() {
         institute = institute,
         specialties = specialities,
         specialGroups = specialGroups,
-        savedPath = "E:/yarmarka"
+        savedPath = "E:/yarmarka/"
     ).execute()
 }
