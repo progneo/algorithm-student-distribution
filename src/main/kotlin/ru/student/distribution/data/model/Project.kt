@@ -5,6 +5,7 @@ data class Project(
     var title: String,
     var places: Int,
     var freePlaces: Int,
+    var busyPlaces: Int,
     var groups: List<String>,
     var difficulty: Int,
     var customer: String,

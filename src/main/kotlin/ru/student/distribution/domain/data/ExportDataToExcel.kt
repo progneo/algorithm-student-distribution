@@ -55,7 +55,7 @@ object ExportDataToExcel {
         for (student in notApplied) {
             workSheetStud.getRange("A$studIndex:C$studIndex").value = arrayOf(
                 student.name,
-                student.realGroup,
+                student.fullGroupName,
                 student.id
             )
             studIndex++
@@ -105,7 +105,7 @@ object ExportDataToExcel {
 
                 workSheet.getRange("A$participationIndexExcel:F$participationIndexExcel").value = arrayOf(
                     student.name,
-                    student.realGroup,
+                    student.fullGroupName,
                     student.id,
                     p.priority,
                     if (p.priority == 5) "Молчун" else if (p.priority == 4) "Не попал на свои проекты по заявкам" else "Активный"
