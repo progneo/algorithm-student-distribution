@@ -40,7 +40,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "ru.student.distribution"
             artifactId = "student-distribution-algorithm"
-            version = "1.0.0"
+            version = "1.1.5"
 
             from(components["java"])
         }

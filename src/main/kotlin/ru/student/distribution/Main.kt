@@ -1,8 +1,6 @@
 package ru.student.distribution
 
-import ru.student.distribution.data.model.Participation
-import ru.student.distribution.data.model.Project
-import ru.student.distribution.data.model.Student
+import ru.student.distribution.data.model.*
 import ru.student.distribution.domain.distribution.Distribution
 import ru.student.distribution.domain.distribution.DistributionRule
 
@@ -11,60 +9,122 @@ import ru.student.distribution.domain.distribution.DistributionRule
  * Example of launching algorithm
  */
 private fun main() {
-    val groups = mapOf("ИСТб" to "ИСТб-1", "АСУб" to "АСУб-1")
+    val institutes = listOf(
+        Institute(
+            id = 0,
+            name = "1"
+        ),
+        Institute(
+            id = 1,
+            name = "2"
+        )
+    )
+    val departments = listOf(
+        Department(
+            id = 0,
+            name = "1.1",
+            institute = institutes[0]
+        ),
+        Department(
+            id = 1,
+            name = "1.2",
+            institute = institutes[0]
+        ),
+    )
+    val groups = listOf(
+        Specialty(
+            id = 0,
+            name = "ИСТб",
+            institute = institutes[0],
+            department = departments[0]
+        ),
+        Specialty(
+            id = 1,
+            name = "АСУб",
+            institute = institutes[0],
+            department = departments[1]
+        ),
+        Specialty(
+            id = 2,
+            name = "ЭВМ",
+            institute = institutes[0],
+            department = departments[1]
+        )
+    )
     val students = mutableListOf<Student>()
-    (0..35).forEach {
-        val groupName = if (it < 15) "АСУб" else "ИСТб"
-        val groupNumber = groups[groupName]!!
+    (0..25).forEach {
+        val groupNumber = if (it < 15) 1 else 0
+        val group = groups[groupNumber]
+        val course = if (it < 15) 4 else 3
         students.add(
-            Student(id = it, name = "Name $it", groupFamily = groupName, fullGroupName = groupNumber)
+            Student(id = it, name = "Name $it", groupFamily = group.name, fullGroupName = group.name + "-$course", specialty = group, course = course)
         )
     }
     val projects = mutableListOf<Project>(
         Project(
             id = 1,
             title = "Project 1",
-            groups = listOf("ИСТб", "АСУб"),
+            groups = listOf(groups[0], groups[1]),
             places = 15,
             freePlaces = 15,
             busyPlaces = 0,
-            supervisors = listOf("Supervisor 1"),
+            supervisors = listOf(),
             difficulty = 1,
-            customer = ""
+            customer = "",
+            department = departments[0],
+            projectSpecialties = listOf(
+                ProjectSpecialty(
+                    id = 0,
+                    course = 3,
+                    specialty = groups[0],
+                    priority = 1
+                ),
+                ProjectSpecialty(
+                    id = 1,
+                    course = 4,
+                    specialty = groups[1],
+                    priority = 1
+                ),
+            )
         ),
         Project(
             id = 2,
             title = "Project 2",
-            groups = listOf("АСУб"),
+            groups = listOf(groups[1]),
             places = 15,
             freePlaces = 15,
             busyPlaces = 0,
-            supervisors = listOf("Supervisor 2"),
+            supervisors = listOf(),
             difficulty = 1,
-            customer = ""
+            customer = "",
+            department = departments[0],
+            projectSpecialties = listOf(
+                ProjectSpecialty(
+                    id = 2,
+                    course = 4,
+                    specialty = groups[1],
+                    priority = 1
+                ),
+            )
         ),
     )
     val participation = mutableListOf<Participation>()
 
     participation.add(Participation(id = 0, priority = 1, projectId = 1, studentId = 15, stateId = 0))
-    participation.add(Participation(id = 1, priority = 1, projectId = 1, studentId = 16, stateId = 0))
-    participation.add(Participation(id = 2, priority = 2, projectId = 2, studentId = 0, stateId = 0))
-    participation.add(Participation(id = 3, priority = 1, projectId = 2, studentId = 1, stateId = 0))
-    participation.add(Participation(id = 4, priority = 1, projectId = 2, studentId = 2, stateId = 0))
-
-    val institute = "Institute"
-    val specialities = mutableListOf<String>("ИСТб", "АСУб")
-    val specialGroups = mutableListOf<String>()
+//    participation.add(Participation(id = 1, priority = 1, projectId = 1, studentId = 16, stateId = 0))
+//    participation.add(Participation(id = 2, priority = 2, projectId = 2, studentId = 0, stateId = 0))
+//    participation.add(Participation(id = 3, priority = 1, projectId = 2, studentId = 1, stateId = 0))
+//    participation.add(Participation(id = 4, priority = 1, projectId = 2, studentId = 2, stateId = 0))
 
     Distribution(
         students = students,
         projects = projects,
         participations = participation,
-        institute = institute,
-        specialties = specialities,
-        specialGroups = specialGroups,
-        savedPath = "E:/yarmarka/",
-        distributionRule = DistributionRule(15, 9)
+        institute = institutes[0],
+        specialties = groups,
+        savingPath = "E:/yarmarka/",
+        distributionRule = DistributionRule(15, 9),
+        projectSpecialties = listOf()
     ).execute()
 }
 

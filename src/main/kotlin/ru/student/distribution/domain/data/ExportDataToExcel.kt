@@ -5,6 +5,7 @@ import ru.student.distribution.data.model.Participation
 import ru.student.distribution.data.model.Project
 import ru.student.distribution.data.model.Student
 import org.apache.poi.ss.usermodel.WorkbookFactory
+import ru.student.distribution.data.model.Institute
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -16,7 +17,7 @@ object ExportDataToExcel {
         notApplied: List<Student>,
         projects: List<Project>,
         participations: List<Participation>,
-        institute: String,
+        institute: Institute,
         isUniformly: Boolean = false,
         filePath: String
     ) {
@@ -115,7 +116,7 @@ object ExportDataToExcel {
             index++
         }
         workBook.save(finalPath)
-        deleteExcessLists(finalPath, filePath, index, institute, isUniformly)
+        deleteExcessLists(finalPath, filePath, index, institute.name, isUniformly)
     }
 
     private fun deleteExcessLists(filePath: String, newFilePath: String, lastSheetNumber: Int, institute: String, isUniformly: Boolean) {

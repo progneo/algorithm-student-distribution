@@ -5,4 +5,6 @@ data class Student(
     var name: String,
     var groupFamily: String,
     var fullGroupName: String,
+    val specialty: Specialty,
+    val course: Int
 )

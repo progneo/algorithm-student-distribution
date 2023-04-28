@@ -6,8 +6,10 @@ data class Project(
     var places: Int,
     var freePlaces: Int,
     var busyPlaces: Int,
-    var groups: List<String>,
+    var groups: List<Specialty>,
     var difficulty: Int,
     var customer: String,
-    var supervisors: List<String>,
+    val department: Department,
+    var supervisors: List<Supervisor>,
+    val projectSpecialties: List<ProjectSpecialty>
 )
