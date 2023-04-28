@@ -8,12 +8,13 @@ class DistributionPreparation(
     private val participations: List<Participation>
 ) {
 
-    val freeStudents = students.toMutableList()
+    private val freeStudents = students.toMutableList()
 
-    fun prepare() {
+    fun prepare(): List<Student> {
         val parts = participations.map { it.studentId }.toSet()
         parts.forEach {
             freeStudents.removeIf { stud -> it == stud.id }
         }
+        return freeStudents
     }
 }
