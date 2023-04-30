@@ -1,4 +1,4 @@
-package ru.student.distribution.data.model
+package ru.student.distribution.model
 
 data class Supervisor(
     var id: Int,

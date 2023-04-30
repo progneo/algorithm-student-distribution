@@ -1,9 +1,9 @@
 package ru.student.distribution.domain.distribution
 
-import ru.student.distribution.data.model.Participation
-import ru.student.distribution.data.model.Student
+import ru.student.distribution.model.Participation
+import ru.student.distribution.model.Student
 
-class DistributionPreparation(
+internal class DistributionPreparation(
     private val students: List<Student>,
     private val participations: List<Participation>
 ) {

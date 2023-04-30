@@ -1,6 +1,6 @@
 package ru.student.distribution.domain.distribution
 
-import ru.student.distribution.data.model.*
+import ru.student.distribution.model.*
 
 class DistributionLauncher(
     private val students: MutableList<Student>,

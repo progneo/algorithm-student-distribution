@@ -1,4 +1,4 @@
-package ru.student.distribution.data.model
+package ru.student.distribution.model
 
 data class ProjectSpecialty(
     val id: Int,

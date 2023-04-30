@@ -1,13 +1,6 @@
 package ru.student.distribution.domain.data
 
 
-import ru.student.distribution.data.model.Project
-import ru.student.distribution.data.model.Student
-import ru.student.distribution.data.model.Supervisor
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import java.io.File
-import java.io.FileInputStream
-
 class ProjectData {
     var id: String = ""
 }

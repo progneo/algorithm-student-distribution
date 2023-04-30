@@ -1,8 +1,8 @@
 //package ru.student.distribution.domain.data
 //
-//import ru.student.distribution.data.model.Participation
-//import ru.student.distribution.data.model.Project
-//import ru.student.distribution.data.model.Student
+//import ru.student.distribution.model.Participation
+//import ru.student.distribution.model.Project
+//import ru.student.distribution.model.Student
 //import java.io.File
 //
 //object ImportCsvData {

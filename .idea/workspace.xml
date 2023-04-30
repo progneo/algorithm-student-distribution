@@ -4,15 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="Added new entities and changed specialty id key in priorities to ProjectSpecialty object">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/DistributionResults.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/InstituteResults.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/ParticipationDistribution.kt" afterDir="false" />
+    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="Reworked the way of launching the distribution and separated logic by participation and silent students by priorities">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/Main.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Department.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Department.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/DistributionResults.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/DistributionResults.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Institute.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Institute.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/InstituteResults.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/InstituteResults.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Participation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Participation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Project.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Project.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/ProjectSpecialty.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/ProjectSpecialty.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/ProjectSupervisor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/ProjectSupervisor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Specialty.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Specialty.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Student.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Student.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Supervisor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Supervisor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ExportDataToExcel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ExportDataToExcel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportCsvData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportCsvData.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportExcelData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportExcelData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Distribution.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Distribution.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionLauncher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionLauncher.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionPreparation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionPreparation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionStatistics.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/ParticipationDistribution.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/ParticipationDistribution.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Priority.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Priority.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/util/funs.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,6 +144,9 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\PROJECTS\INTELLIJ\algorithm-student-distribution-official\src\main\kotlin\ru\student\distribution" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="ru.student.distribution" />
+    </key>
   </component>
   <component name="RunManager" selected="Gradle.algorithm-student-distribution-super-new [publishToMavenLocal]">
     <configuration name="algorithm-student-distribution-super-new [publishToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -224,8 +243,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.algorithm-student-distribution-super-new [publishToMavenLocal]" />
-        <item itemvalue="Kotlin.MainKt" />
         <item itemvalue="Gradle.student-distribution-algorithm [build]" />
+        <item itemvalue="Kotlin.MainKt" />
       </list>
     </recent_temporary>
   </component>
@@ -322,7 +341,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682666353693</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Reworked the way of launching the distribution and separated logic by participation and silent students by priorities">
+      <created>1682672995602</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1682672995602</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -349,6 +375,7 @@
     <MESSAGE value="Separated distribution to uniformly and merely. Created distributing uniformly to full" />
     <MESSAGE value="Added DistributionRule" />
     <MESSAGE value="Added new entities and changed specialty id key in priorities to ProjectSpecialty object" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added new entities and changed specialty id key in priorities to ProjectSpecialty object" />
+    <MESSAGE value="Reworked the way of launching the distribution and separated logic by participation and silent students by priorities" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reworked the way of launching the distribution and separated logic by participation and silent students by priorities" />
   </component>
 </project>

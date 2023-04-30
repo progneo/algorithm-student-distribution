@@ -1,10 +1,10 @@
 package ru.student.distribution.domain.distribution
 
-import ru.student.distribution.data.model.Participation
-import ru.student.distribution.data.model.Project
-import ru.student.distribution.data.model.Student
+import ru.student.distribution.model.Participation
+import ru.student.distribution.model.Project
+import ru.student.distribution.model.Student
 
-class ParticipationDistribution(
+internal class ParticipationDistribution(
     private val projects: List<Project>,
     private val participation: List<Participation>,
     private val students: List<Student>,

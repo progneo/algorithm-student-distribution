@@ -1,7 +1,6 @@
 package ru.student.distribution.domain.distribution
 
-import ru.student.distribution.data.model.*
-import ru.student.distribution.domain.data.ExportDataToExcel
+import ru.student.distribution.model.*
 
 internal class Distribution(
     private val students: MutableList<Student>,
@@ -29,7 +28,8 @@ internal class Distribution(
         return InstituteResults(
             institute = institute,
             notAppliedStudents = notApplied,
-            participation = participations
+            participation = participations,
+            projects = projects
         )
     }
 
