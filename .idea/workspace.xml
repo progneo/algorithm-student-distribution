@@ -4,31 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="Reworked the way of launching the distribution and separated logic by participation and silent students by priorities">
+    <list default="true" id="f58f94f8-1d22-4178-985b-f8073ac2358f" name="Changes" comment="*removed NaN koef's;&#10;*made 'toFull' function run over projects again if students was found;&#10;*fixed wrong 4 priority when distributing in first function;&#10;*added to 5 participation priorities in ParticipationDistribution;&#10;*removed any student count borders in projects;&#10;*added some fields to entities to fulfill client's needs.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/Main.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Department.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Department.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/DistributionResults.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/DistributionResults.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Institute.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Institute.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/InstituteResults.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/InstituteResults.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Participation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Participation.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Project.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Project.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/ProjectSpecialty.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/ProjectSpecialty.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/ProjectSupervisor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/ProjectSupervisor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Specialty.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Specialty.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Student.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Student.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/data/model/Supervisor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Supervisor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ExportDataToExcel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ExportDataToExcel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportCsvData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportCsvData.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportExcelData.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/data/ImportExcelData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Distribution.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Distribution.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionLauncher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionLauncher.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionPreparation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionPreparation.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/DistributionStatistics.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/ParticipationDistribution.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/ParticipationDistribution.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Priority.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/domain/distribution/Priority.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/util/funs.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/DistributionResults.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/DistributionResults.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Participation.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Participation.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Project.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Project.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Student.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ru/student/distribution/model/Student.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,6 +134,37 @@
     </key>
   </component>
   <component name="RunManager" selected="Gradle.algorithm-student-distribution-super-new [publishToMavenLocal]">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
     <configuration name="algorithm-student-distribution-super-new [publishToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -208,37 +224,6 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
@@ -348,7 +333,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682672995602</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Cleaned project and added projects to results">
+      <created>1682840632069</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1682840632069</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -376,6 +368,8 @@
     <MESSAGE value="Added DistributionRule" />
     <MESSAGE value="Added new entities and changed specialty id key in priorities to ProjectSpecialty object" />
     <MESSAGE value="Reworked the way of launching the distribution and separated logic by participation and silent students by priorities" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reworked the way of launching the distribution and separated logic by participation and silent students by priorities" />
+    <MESSAGE value="Cleaned project and added projects to results" />
+    <MESSAGE value="*removed NaN koef's;&#10;*made 'toFull' function run over projects again if students was found;&#10;*fixed wrong 4 priority when distributing in first function;&#10;*added to 5 participation priorities in ParticipationDistribution;&#10;*removed any student count borders in projects;&#10;*added some fields to entities to fulfill client's needs." />
+    <option name="LAST_COMMIT_MESSAGE" value="*removed NaN koef's;&#10;*made 'toFull' function run over projects again if students was found;&#10;*fixed wrong 4 priority when distributing in first function;&#10;*added to 5 participation priorities in ParticipationDistribution;&#10;*removed any student count borders in projects;&#10;*added some fields to entities to fulfill client's needs." />
   </component>
 </project>

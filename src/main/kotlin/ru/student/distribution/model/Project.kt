@@ -11,5 +11,12 @@ data class Project(
     var customer: String,
     val department: Department,
     var supervisors: List<Supervisor>,
-    val projectSpecialties: List<ProjectSpecialty>
+    val projectSpecialties: List<ProjectSpecialty>,
+    val anotherProjectSpecialties: List<ProjectSpecialty>,
+    val goal: String,
+    val description: String,
+    val dateStart: String,
+    val dateEnd: String,
+    val productResult: String,
+    val studyResult: String
 )

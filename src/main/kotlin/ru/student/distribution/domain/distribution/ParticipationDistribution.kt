@@ -13,47 +13,50 @@ internal class ParticipationDistribution(
     data class Configuration(
         val projects: List<Project>,
         val participation: List<Participation>,
-        val notAppliedStudents: List<Student>
+        val freeStudents: List<Student>,
+        val notAppliedStudents: List<Student>,
     )
 
+    private val newParticipation = mutableListOf<Participation>()
+
     fun distribute(): Configuration {
-        for (priority in (1..3)) {
+        for (priority in (1..5)) {
             for (project in projects) {
-                if (project.freePlaces != 0) {
-                    val participationsForCurrentProject =
-                        participation.filter {
-                            it.projectId == project.id &&
-                                    it.priority == priority &&
-                                    it.stateId == 0
-                        }
-                            .toMutableList()
-
-                    if (participationsForCurrentProject.isNotEmpty()) {
-                        for (i in participationsForCurrentProject) {
-                            if (project.freePlaces == 0) {
-                                break
-                            }
-                            val currentParticipationIndex = participation.indexOf(i)
-                            participation[currentParticipationIndex].stateId = 1
-
-                            val participationsToDelete =
-                                participation.filter { it.studentId == participation[currentParticipationIndex].studentId && it.priority != priority }
-                            for (j in participationsToDelete) {
-                                participation[participation.indexOf(j)].stateId = 2
-                            }
-                            project.freePlaces--
-                            project.busyPlaces++
-                        }
+                val participationsForCurrentProject =
+                    participation.filter {
+                        it.projectId == project.id &&
+                                it.priority == priority &&
+                                it.stateId == 0
                     }
+                        .toMutableList()
+
+                for (i in participationsForCurrentProject) {
+                    val currentParticipationIndex = participation.indexOf(i)
+                    participation[currentParticipationIndex].stateId = 1
+
+                    val participationsToDelete =
+                        participation.filter { it.studentId == participation[currentParticipationIndex].studentId && it.priority != priority }
+                    for (j in participationsToDelete) {
+                        participation[participation.indexOf(j)].stateId = 2
+                    }
+                    project.freePlaces--
+                    project.busyPlaces++
                 }
             }
         }
+
+        newParticipation.addAll(participation.filter { it.stateId == 1 })
+        participation.filter { it.stateId != 1 }.forEach(::println)
 
         val notAppliedStudents = findNotAppliedStudents()
 
         return Configuration(
             projects,
-            participation,
+            newParticipation,
+            DistributionPreparation(
+                students,
+                participation
+            ).prepare(),
             notAppliedStudents
         )
     }
@@ -68,11 +71,6 @@ internal class ParticipationDistribution(
                 .map { it.studentId }.toSet()
 
         notApplied.addAll(notAppliedStudents.map { students.find { stud -> stud.id == it }!! })
-
-        notApplied.addAll(DistributionPreparation(
-            students,
-            participation
-        ).prepare())
 
         notAppliedParticipations.forEach {
             it.stateId = 2

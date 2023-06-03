@@ -1,6 +1,7 @@
 package ru.student.distribution.model
 
 data class DistributionResults(
-    val allParticipation: List<Participation>,
-    val institutesResults: List<InstituteResults>
+    val participation: List<Participation>,
+    val instituteResults: List<InstituteResults>,
+    val excessProjects: List<Project>
 )
