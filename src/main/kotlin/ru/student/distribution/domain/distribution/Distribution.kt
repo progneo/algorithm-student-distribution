@@ -1,6 +1,10 @@
 package ru.student.distribution.domain.distribution
 
 import ru.student.distribution.model.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.NoSuchElementException
+import kotlin.collections.LinkedHashMap
 
 internal class Distribution(
     private val students: MutableList<Student>,
@@ -93,7 +97,8 @@ internal class Distribution(
                         studentId = student.id,
                         stateId = 1,
                         studentName = student.name,
-                        studentNumz = student.numz
+                        studentNumz = student.numz,
+                        updatedAt = getCurrentDateTime()
                     )
                 )
                 projects.find { it.id == maxPriority.projectId }!!.apply {
@@ -158,7 +163,8 @@ internal class Distribution(
                                 stateId = 1,
                                 studentId = student.id,
                                 studentName = student.name,
-                                studentNumz = student.numz
+                                studentNumz = student.numz,
+                                updatedAt = getCurrentDateTime()
                             )
                         )
 
@@ -251,7 +257,8 @@ internal class Distribution(
         println("--------------------")
     }
 
-    private fun logProjectStudents() {
-
+    fun getCurrentDateTime(): String {
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        return sdf.format(Date())
     }
 }
