@@ -7,5 +7,6 @@ data class Participation(
     val studentId: Int,
     var stateId: Int,
     var studentNumz: Int,
-    var studentName: String
+    var studentName: String,
+    var updatedAt: String
 )
