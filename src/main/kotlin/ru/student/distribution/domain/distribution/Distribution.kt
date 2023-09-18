@@ -98,7 +98,7 @@ internal class Distribution(
                         stateId = 1,
                         studentName = student.name,
                         studentNumz = student.numz,
-                        updatedAt = getCurrentDateTime()
+                        updatedAt = System.currentTimeMillis().toString()
                     )
                 )
                 projects.find { it.id == maxPriority.projectId }!!.apply {
@@ -164,7 +164,7 @@ internal class Distribution(
                                 studentId = student.id,
                                 studentName = student.name,
                                 studentNumz = student.numz,
-                                updatedAt = getCurrentDateTime()
+                                updatedAt = System.currentTimeMillis().toString()
                             )
                         )
 
