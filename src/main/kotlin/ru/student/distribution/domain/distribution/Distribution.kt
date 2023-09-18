@@ -98,7 +98,7 @@ internal class Distribution(
                         stateId = 1,
                         studentName = student.name,
                         studentNumz = student.numz,
-                        updatedAt = System.currentTimeMillis().toString()
+                        updatedAt = getCurrentDateTime()
                     )
                 )
                 projects.find { it.id == maxPriority.projectId }!!.apply {
@@ -164,7 +164,7 @@ internal class Distribution(
                                 studentId = student.id,
                                 studentName = student.name,
                                 studentNumz = student.numz,
-                                updatedAt = System.currentTimeMillis().toString()
+                                updatedAt = getCurrentDateTime()
                             )
                         )
 
@@ -258,7 +258,7 @@ internal class Distribution(
     }
 
     fun getCurrentDateTime(): String {
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSX")
         return sdf.format(Date())
     }
 }
