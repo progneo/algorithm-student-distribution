@@ -38,7 +38,7 @@ internal class Distribution(
             participation = newParticipations,
             institute = institute,
             notAppliedStudents = notApplied,
-            projects = projects
+            projects = projects,
         )
     }
 
@@ -66,10 +66,12 @@ internal class Distribution(
             .toMap()
             .toMutableMap()
 
-
         val upperPlacesBoundary =
-            if (isUniformly) distributionRule.minPlaces
-            else distributionRule.maxPlaces
+            if (isUniformly) {
+                distributionRule.minPlaces
+            } else {
+                distributionRule.maxPlaces
+            }
 
         sortedPriorities.forEach { entry ->
             val studentsForProjects =
@@ -98,8 +100,8 @@ internal class Distribution(
                         stateId = 1,
                         studentName = student.name,
                         studentNumz = student.numz,
-                        updatedAt = getCurrentDateTime()
-                    )
+                        updatedAt = getCurrentDateTime(),
+                    ),
                 )
                 projects.find { it.id == maxPriority.projectId }!!.apply {
                     freePlaces--
@@ -114,7 +116,7 @@ internal class Distribution(
     }
 
     private fun distributeSilentStudentsUniformlyToFull() {
-        //projects.forEach(::println)
+        // projects.forEach(::println)
         var sortedProjects = projects.filter { it.freePlaces > 0 }
         println("SORTED PROJECTS SIZE = ${sortedProjects.size}")
         if (sortedProjects.isEmpty()) return
@@ -164,8 +166,8 @@ internal class Distribution(
                                 studentId = student.id,
                                 studentName = student.name,
                                 studentNumz = student.numz,
-                                updatedAt = getCurrentDateTime()
-                            )
+                                updatedAt = getCurrentDateTime(),
+                            ),
                         )
 
                         notApplied.removeIf { it.id == student.id }
@@ -219,7 +221,7 @@ internal class Distribution(
         map.toMap()
         val project = projects.find { it.id == projectId }!!
 
-        //selected project groups
+        // selected project groups
         project.projectSpecialties.forEach { psp ->
             val koef = evaluateKoef(students, notApplied, psp, project)
 
@@ -230,8 +232,7 @@ internal class Distribution(
             }
         }
 
-
-        //other projects
+        // other projects
         val iterator = map[projectSpecialty]!!.iterator()
 
         while (iterator.hasNext()) {
@@ -257,7 +258,7 @@ internal class Distribution(
         println("--------------------")
     }
 
-    fun getCurrentDateTime(): String {
+    private fun getCurrentDateTime(): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSX")
         return sdf.format(Date())
     }

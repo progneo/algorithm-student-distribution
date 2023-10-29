@@ -6,7 +6,7 @@ import ru.student.distribution.model.Student
 
 internal class ParticipationDistribution(
     private val projects: List<Project>,
-    private val participation: List<Participation>,
+    private val participationList: List<Participation>,
     private val students: List<Student>,
 ) {
 
@@ -22,31 +22,35 @@ internal class ParticipationDistribution(
     fun distribute(): Configuration {
         for (priority in (1..5)) {
             for (project in projects) {
-                val participationsForCurrentProject =
-                    participation.filter {
-                        it.projectId == project.id &&
-                                it.priority == priority &&
-                                it.stateId == 0
-                    }
-                        .toMutableList()
+                val participationsForCurrentProject = participationList
+                    .filter { it.projectId == project.id && it.priority == priority && it.stateId == 0 }
+                    .toMutableList()
 
-                for (i in participationsForCurrentProject) {
-                    val currentParticipationIndex = participation.indexOf(i)
-                    participation[currentParticipationIndex].stateId = 1
+                for (participation in participationsForCurrentProject) {
+                    val currentParticipationIndex = participationList.indexOf(participation)
 
-                    val participationsToDelete =
-                        participation.filter { it.studentId == participation[currentParticipationIndex].studentId && it.priority != priority }
-                    for (j in participationsToDelete) {
-                        participation[participation.indexOf(j)].stateId = 2
+                    if (project.busyPlaces >= project.places) {
+                        participationList[currentParticipationIndex].stateId = 2
+                    } else {
+                        participationList[currentParticipationIndex].stateId = 1
+
+                        val participationsToDelete = participationList.filter {
+                            it.studentId == participationList[currentParticipationIndex].studentId && it.priority != priority
+                        }
+
+                        for (participationToDelete in participationsToDelete) {
+                            participationList[participationList.indexOf(participationToDelete)].stateId = 2
+                        }
+
+                        project.freePlaces--
+                        project.busyPlaces++
                     }
-                    project.freePlaces--
-                    project.busyPlaces++
                 }
             }
         }
 
-        newParticipation.addAll(participation.filter { it.stateId == 1 })
-        participation.filter { it.stateId != 1 }.forEach(::println)
+        newParticipation.addAll(participationList.filter { it.stateId == 1 })
+        participationList.filter { it.stateId != 1 }.forEach(::println)
 
         val notAppliedStudents = findNotAppliedStudents()
 
@@ -55,20 +59,19 @@ internal class ParticipationDistribution(
             newParticipation,
             DistributionPreparation(
                 students,
-                participation
+                participationList,
             ).prepare(),
-            notAppliedStudents
+            notAppliedStudents,
         )
     }
 
     private fun findNotAppliedStudents(): List<Student> {
         val notApplied = mutableListOf<Student>()
-
-        val notAppliedParticipations = participation.filter { it.stateId == 0 }
-
-        val notAppliedStudents =
-            participation.filter { it.stateId == 0 && students.map { stud -> stud.id }.contains(it.studentId) }
-                .map { it.studentId }.toSet()
+        val notAppliedParticipations = participationList.filter { it.stateId == 0 }
+        val notAppliedStudents = participationList
+            .filter { it.stateId == 0 && students.map { stud -> stud.id }.contains(it.studentId) }
+            .map { it.studentId }
+            .toSet()
 
         notApplied.addAll(notAppliedStudents.map { students.find { stud -> stud.id == it }!! })
 

@@ -1,6 +1,5 @@
 package ru.student.distribution.domain.distribution
 
-import com.grapecity.documents.excel.drawing.b.it
 import ru.student.distribution.model.*
 
 class DistributionLauncher(
@@ -15,14 +14,14 @@ class DistributionLauncher(
     fun launch(): DistributionResults {
         val participationDistributionConfiguration = ParticipationDistribution(
             projects = projects,
-            participation = participations,
-            students = students
+            participationList = participations,
+            students = students,
         ).distribute()
 
         val totalParticipation = mutableListOf<Participation>()
         val instituteResults = mutableListOf<InstituteResults>()
 
-        totalParticipation.addAll(participationDistributionConfiguration.participation )
+        totalParticipation.addAll(participationDistributionConfiguration.participation)
 
         Distribution.participationIndex = participations.last().id + 1
 
@@ -37,11 +36,11 @@ class DistributionLauncher(
                 participationDistributionConfiguration.projects
                     .filter {
                         it.department.id != 0 &&
-                                it.projectSpecialties
-                                    .map { ps -> ps.specialty }
-                                    .map { s -> s.institute }
-                                    .map { i -> i.id }
-                                    .contains(institute.id)
+                            it.projectSpecialties
+                                .map { ps -> ps.specialty }
+                                .map { s -> s.institute }
+                                .map { i -> i.id }
+                                .contains(institute.id)
                     }
                     .toMutableList()
 
@@ -63,7 +62,7 @@ class DistributionLauncher(
                     .toMutableList(),
                 projects = newProjects,
                 institute = institute,
-                distributionRule = distributionRule
+                distributionRule = distributionRule,
             ).execute()
 
             instituteResults.add(newInstituteResults)
@@ -76,7 +75,7 @@ class DistributionLauncher(
         return DistributionResults(
             participation = totalParticipation,
             instituteResults = instituteResults,
-            excessProjects = listOf()
+            excessProjects = listOf(),
         )
     }
 }
