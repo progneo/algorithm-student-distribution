@@ -3,8 +3,6 @@ package ru.student.distribution.domain.distribution
 import ru.student.distribution.model.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.NoSuchElementException
-import kotlin.collections.LinkedHashMap
 
 internal class Distribution(
     private val students: MutableList<Student>,
@@ -14,7 +12,6 @@ internal class Distribution(
     private val institute: Institute,
     private val distributionRule: DistributionRule,
 ) {
-
     companion object {
         var participationIndex: Int = 0
     }
@@ -29,7 +26,6 @@ internal class Distribution(
 
     fun execute(): InstituteResults {
         initPriorities()
-        println("priorities = ${priorities.size}")
         distributeSilentStudents(isUniformly = true)
         distributeSilentStudentsUniformlyToFull()
         logResults()
@@ -60,11 +56,12 @@ internal class Distribution(
         priorities.forEach {
             sortedPriorities[it.key] = it.value.toMutableList()
         }
-        sortedPriorities = sortedPriorities
-            .toList()
-            .sortedBy { (key, value) -> value.size }
-            .toMap()
-            .toMutableMap()
+        sortedPriorities =
+            sortedPriorities
+                .toList()
+                .sortedBy { (key, value) -> value.size }
+                .toMap()
+                .toMutableMap()
 
         val upperPlacesBoundary =
             if (isUniformly) {
@@ -89,8 +86,6 @@ internal class Distribution(
 
                 val student = studentsForProjects[0]
 
-                println("NEW PARTICIPATION $student")
-
                 newParticipations.add(
                     Participation(
                         id = participationIndex++,
@@ -103,12 +98,15 @@ internal class Distribution(
                         updatedAt = getCurrentDateTime(),
                     ),
                 )
+
                 projects.find { it.id == maxPriority.projectId }!!.apply {
                     freePlaces--
                     busyPlaces++
                 }
+
                 updateKoef(sortedPriorities, entry.key, maxPriority.projectId, students, projects)
                 updateKoef(priorities, entry.key, maxPriority.projectId, students, projects)
+
                 notApplied.removeIf { stud -> stud.id == studentsForProjects[0].id }
                 studentsForProjects.removeIf { stud -> stud.id == studentsForProjects[0].id }
             }
@@ -116,17 +114,16 @@ internal class Distribution(
     }
 
     private fun distributeSilentStudentsUniformlyToFull() {
-        // projects.forEach(::println)
         var sortedProjects = projects.filter { it.freePlaces > 0 }
         println("SORTED PROJECTS SIZE = ${sortedProjects.size}")
         if (sortedProjects.isEmpty()) return
+
         var lowerValue = sortedProjects.minBy { it.busyPlaces }.busyPlaces
         var upperValue = sortedProjects.maxBy { it.busyPlaces }.busyPlaces
         println("UPPER = $upperValue, LOWER = $lowerValue")
 
         process@ while (lowerValue < distributionRule.maxPlaces && notApplied.isNotEmpty()) {
-            sortedProjects = sortedProjects
-                .sortedWith(compareBy({ it.busyPlaces }, { it.groups.size }))
+            sortedProjects = sortedProjects.sortedWith(compareBy({ it.busyPlaces }, { it.groups.size }))
 
             val lastLowerValue = lowerValue
 
@@ -138,24 +135,17 @@ internal class Distribution(
                     }
                 }
 
-                println("${project.id}, ${project.title.take(20)}")
-                groupPriorities.forEach(::println)
                 val sortedGroupPriorities: MutableMap<ProjectSpecialty, Float> = LinkedHashMap()
                 groupPriorities.entries.sortedBy { -it.value }.forEach {
                     sortedGroupPriorities[it.key] = it.value
                 }
-                println("-----")
-                sortedGroupPriorities.forEach(::println)
 
                 for (gp in sortedGroupPriorities) {
-                    println("here")
                     try {
-                        if (project.id == 516) println("${gp.key.specialty.name}, ${gp.key.course}")
-                        val student = notApplied.first {
-                            if (project.id == 516) println("$it")
-                            it.specialty.id == gp.key.specialty.id && it.course == gp.key.course
-                        }
-                        println("ENROLL ${student.fullGroupName} TO ${project.id}")
+                        val student =
+                            notApplied.first {
+                                it.specialty.id == gp.key.specialty.id && it.course == gp.key.course
+                            }
 
                         newParticipations.add(
                             Participation(
@@ -172,17 +162,19 @@ internal class Distribution(
 
                         notApplied.removeIf { it.id == student.id }
                         updateKoef(priorities, gp.key, project.id, students, sortedProjects)
+
                         sortedProjects.find { it.id == project.id }!!.apply {
                             busyPlaces++
                             freePlaces--
                         }
+
                         lowerValue = sortedProjects.minBy { it.busyPlaces }.busyPlaces
                         val currentMax = sortedProjects.maxBy { it.busyPlaces }.busyPlaces
                         if (currentMax > upperValue) upperValue = currentMax
 
                         continue@process
                     } catch (e: NoSuchElementException) {
-                        println(e)
+                        e.printStackTrace()
                     }
                 }
             }
@@ -206,7 +198,6 @@ internal class Distribution(
         val groupCourseFreeStudents =
             notAppliedStudents.count { it.specialty == projectSpecialty.specialty && it.course == projectSpecialty.course }
         val koef = (project.freePlaces * 1.0f / project.places) * (groupCourseFreeStudents * 1.0f / groupCourseStudents)
-//        println("${project.freePlaces} * 1.0f / ${project.places} * ${groupCourseFreeStudents} * 1.0f / ${groupCourseStudents} = $koef")
 
         return koef
     }
